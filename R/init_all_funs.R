@@ -20,10 +20,10 @@ py <-
 
 ##' create df of descriptives
 desc_df <-
-    function(df) {
+    function(df, ...) {
         ## view outliers
         descriptives <-
-            psych::describe(df)
+            psych::describe(df, ...)
         ## get the outlier names
         variable_names <-
             tibble::as_tibble(names(df))
@@ -37,13 +37,14 @@ desc_df <-
 
 ##' @title create df of descriptives by group
 descBy_df <-
-    function(df, grp) {
+    function(df, grp, ...) {
         ## view outliers
         descriptives <-
             psych::describeBy(df,
                               as.factor(grp),
                               mat = TRUE,
-                              digits = 2)
+                              digits = 2,
+                              ...)
         ## get the outlier names
         variable_names <-
             tibble::as_tibble(names(df))

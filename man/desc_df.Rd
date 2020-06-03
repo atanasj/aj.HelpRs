@@ -4,7 +4,7 @@
 \alias{desc_df}
 \title{create df of descriptives}
 \usage{
-desc_df(df)
+desc_df(df, ...)
 }
 \description{
 create df of descriptives

@@ -4,7 +4,7 @@
 \alias{descBy_df}
 \title{create df of descriptives by group}
 \usage{
-descBy_df(df, grp)
+descBy_df(df, grp, ...)
 }
 \description{
 create df of descriptives by group
