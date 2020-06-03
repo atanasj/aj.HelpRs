@@ -77,3 +77,24 @@ qq_plots <-
             stat_qq() + stat_qq_line()           # provide the qq_plots
         return(multi_qq_plots)
     }
+
+##' @title create row means and percent missing of selected variables
+##' @param data your data
+##' @param new_name the prefix of the new variables as a string
+##' @param ... variables to select as per dplyr::select
+row_means_miss_perc <-
+    function(data, new_name, ...){
+        data <-
+            data %>%
+            dplyr::mutate(
+                       ## mean of rows
+                       UQ(paste(rlang::syms(c(new_name)), "mean", sep = "_")) :=
+                           round(
+                               base::rowMeans(select(., ...)),
+                               digits = 2),
+                       ## percent missing of rows
+                       UQ(paste(rlang::syms(c(new_name)), "miss", sep = "_")) :=
+                           base::rowMeans(is.na(select(., ...)))
+                   )
+        return(data)
+    }
