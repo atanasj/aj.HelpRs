@@ -177,3 +177,19 @@ outlier_boxplots <-
             )
         return(outlier_boxplots)
     }
+
+
+##' @title function to collapse duplicates entries
+##' @param df this function should be run on a dataframe or matrix
+##' @importFrom magrittr %>%
+##' @examples
+##' ## collapse duplicates and recode any with problems
+##' ## sp_change <-
+##' ##     sp_change %>%
+##' ##     group_by(uci) %>%
+##' ##     summarise_all(coalesce_by_column) %>%
+##' ##     ungroup()
+coalesce_by_column <-
+    function(df) {
+        return(dplyr::coalesce(!!! as.list(df)))
+    }
