@@ -9,7 +9,7 @@ outlier_boxplots(data, melt_var, incl = incl, excl = excl)
 \arguments{
 \item{data}{your data}
 
-\item{melt_var}{var to melt by}
+\item{melt_var}{var to melt by e.g, the participant ID}
 
 \item{incl}{requires regex string of var names to include}
 
