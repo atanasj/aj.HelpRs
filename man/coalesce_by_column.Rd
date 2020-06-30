@@ -14,9 +14,11 @@ function to collapse duplicates entries
 }
 \examples{
 ## collapse duplicates and recode any with problems
-## sp_change <-
-##     sp_change \%>\%
-##     group_by(uci) \%>\%
-##     summarise_all(coalesce_by_column) \%>\%
-##     ungroup()
+\dontrun{
+sp_change <-
+    sp_change \%>\%
+    group_by(uci) \%>\%
+    summarise_all(coalesce_by_column) \%>\%
+    ungroup()
+}
 }
