@@ -189,6 +189,7 @@ outlier_boxplots <-
 ##' ##     group_by(uci) %>%
 ##' ##     summarise_all(coalesce_by_column) %>%
 ##' ##     ungroup()
+##' @export
 coalesce_by_column <-
     function(df) {
         return(dplyr::coalesce(!!! as.list(df)))
