@@ -12,7 +12,8 @@
 
 ##' @title html package help function
 ##' @param ... usually `library = "package-name"`
-h <-
+##' @export
+ajh <-
     function(...) {
         utils::help(...,
                     help_type = "html")
@@ -26,6 +27,7 @@ h <-
 ##' @title create df of descriptives
 ##' @param df your data
 ##' @param ... accepts arguments as per `psych::describe`
+##' @export
 desc_df <-
     function(df, ...) {
         ## view outliers
@@ -46,6 +48,7 @@ desc_df <-
 ##' @param df your data
 ##' @param grp var to group by
 ##' @param ... accepts arguments used as per `pscyh::describeBy`
+##' @export
 descBy_df <-
     function(df, grp, ...) {
         ## view outliers
@@ -79,15 +82,18 @@ descBy_df <-
 ##' @param df your data
 ##' @details use with dplyr::select or purr::keep
 ##' @details https://drsimonj.svbtle.com/quick-plot-of-all-variables
+##' @export
 qq_plots <-
     function(df) {
         multi_qq_plots <-
             df %>%
-            tidyr::gather() %>%                  # Convert to key-value pairs
-            ggplot2::ggplot(aes(sample = value)) +        # Plot the values
-            ggplot2::facet_wrap(~ key, scales = "free") + # In separate panels
-            ggplot2::stat_qq() + 
-            ggplot2::stat_qq_line()           # provide the qq_plots
+            tidyr::gather() %>%                    # Convert to key-value pairs
+            ggplot2::ggplot(aes(sample = value)) + # Plot the values
+            ggplot2::facet_wrap(                   # In separate panels
+                         ~ key,
+                         scales = "free") +
+            ggplot2::stat_qq() +                   # provide qq_plots
+            ggplot2::stat_qq_line()                # provide qq_line
         return(multi_qq_plots)
     }
 
@@ -95,6 +101,7 @@ qq_plots <-
 ##' @param data your data
 ##' @param new_name the prefix of the new variables as a string
 ##' @param ... variables to select as per dplyr::select
+##' @export
 pro_means_miss <-
     function(data, new_name, ...){
         data <-
@@ -118,11 +125,14 @@ pro_means_miss <-
 ##' @param melt_var var to melt by
 ##' @param incl requires regex string of var names to include
 ##' @param excl requires regex string of var names to exclude
+##' @export
 outlier_boxplots <-
     function(data, melt_var, incl = incl, excl = excl){
         is_outlier <- function(x, na.rm = TRUE) {
-            return(x < quantile(x, 0.25, na.rm = na.rm) - 1.5 * IQR(x, na.rm = na.rm) |
-                   x > quantile(x, 0.75, na.rm = na.rm) + 1.5 * IQR(x, na.rm = na.rm))
+            return(x < quantile(x, 0.25, na.rm = na.rm) - 1.5 *
+                   IQR(x, na.rm = na.rm) |
+                   x > quantile(x, 0.75, na.rm = na.rm) + 1.5 *
+                   IQR(x, na.rm = na.rm))
         }
         outlier_boxplots <-
             data %>%
