@@ -2,9 +2,12 @@
 % Please edit documentation in R/init_all_funs.R
 \name{h}
 \alias{h}
-\title{init_all_funs}
+\title{html package help function}
 \usage{
 h(...)
+}
+\arguments{
+\item{...}{usually \code{library = "package-name"}}
 }
 \description{
 A collection of useful functions

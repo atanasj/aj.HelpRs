@@ -4,21 +4,28 @@
 ##' to build on these and separate functions out into seperate documents.
 ##' Additionally, automated testing may be added at a later date.
 ##'
-##' @title init_all_funs
 ##' @author Atanas Janackovski
 
-##' @title help function for use in other consoles i.e., in vscode, radian, emacs, etc.
+
+
+
+
+##' @title html package help function
+##' @param ... usually `library = "package-name"`
 h <-
     function(...) {
-        utils::help(..., help_type = "html")
-}
+        utils::help(...,
+                    help_type = "html")
+    }
 
 
-##' @title create interactive python repl on load
-py <-
-    reticulate::repl_python
+# ##' @title create interactive python repl on load
+# py <-
+#     reticulate::repl_python()
 
-##' create df of descriptives
+##' @title create df of descriptives
+##' @param df your data
+##' @param ... accepts arguments as per `psych::describe`
 desc_df <-
     function(df, ...) {
         ## view outliers
@@ -36,6 +43,9 @@ desc_df <-
     }
 
 ##' @title create df of descriptives by group
+##' @param df your data
+##' @param grp var to group by
+##' @param ... accepts arguments used as per `pscyh::describeBy`
 descBy_df <-
     function(df, grp, ...) {
         ## view outliers
@@ -66,24 +76,26 @@ descBy_df <-
     }
 
 ##' @title create numerous qq_plots of selected variables
-## use with dplyr::select or purr::keep
-## https://drsimonj.svbtle.com/quick-plot-of-all-variables
+##' @param df your data
+##' @details use with dplyr::select or purr::keep
+##' @details https://drsimonj.svbtle.com/quick-plot-of-all-variables
 qq_plots <-
     function(df) {
         multi_qq_plots <-
             df %>%
             tidyr::gather() %>%                  # Convert to key-value pairs
-            ggplot(aes(sample = value)) +        # Plot the values
-            facet_wrap(~ key, scales = "free") + # In separate panels
-            stat_qq() + stat_qq_line()           # provide the qq_plots
+            ggplot2::ggplot(aes(sample = value)) +        # Plot the values
+            ggplot2::facet_wrap(~ key, scales = "free") + # In separate panels
+            ggplot2::stat_qq() + 
+            ggplot2::stat_qq_line()           # provide the qq_plots
         return(multi_qq_plots)
     }
 
-##' @title create row means and percent missing of selected variables
+##' @title create prorated means and percent missing of selected variables
 ##' @param data your data
 ##' @param new_name the prefix of the new variables as a string
 ##' @param ... variables to select as per dplyr::select
-row_means_miss_perc <-
+pro_means_miss <-
     function(data, new_name, ...){
         data <-
             data %>%
@@ -91,11 +103,62 @@ row_means_miss_perc <-
                        ## mean of rows
                        UQ(paste(rlang::syms(c(new_name)), "mean", sep = "_")) :=
                            round(
-                               base::rowMeans(select(., ...)),
+                               base::rowMeans(dplyr::select(., ...)),
                                digits = 2),
                        ## percent missing of rows
                        UQ(paste(rlang::syms(c(new_name)), "miss", sep = "_")) :=
-                           base::rowMeans(is.na(select(., ...)))
+                           base::rowMeans(is.na(dplyr::select(., ...)))
                    )
         return(data)
+    }
+
+
+##' @title multiple boxplots with outliers
+##' @param data your data
+##' @param melt_var var to melt by
+##' @param incl requires regex string of var names to include
+##' @param excl requires regex string of var names to exclude
+outlier_boxplots <-
+    function(data, melt_var, incl = incl, excl = excl){
+        is_outlier <- function(x, na.rm = TRUE) {
+            return(x < quantile(x, 0.25, na.rm = na.rm) - 1.5 * IQR(x, na.rm = na.rm) |
+                   x > quantile(x, 0.75, na.rm = na.rm) + 1.5 * IQR(x, na.rm = na.rm))
+        }
+        outlier_boxplots <-
+            data %>%
+            reshape2::melt(id.var = melt_var) %>%
+            dplyr:: rename(id_var = 1) %>%
+            dplyr::group_by(variable) %>% #
+            dplyr::mutate(outlier =
+                              dplyr::if_else(
+                                  is_outlier(value),
+                                  id_var,
+                                  as.character(NA))) %>%
+            dplyr::ungroup() %>%
+            ## filer to select variables
+            dplyr::filter(
+                ## variables to include
+                stringr::str_detect(
+                    variable,
+                    incl
+                    ## "^dep|^str|^tb|^acss|^mssi|mean$"
+                ) &
+                    ## variables to exclude
+                    !stringr::str_detect(
+                        variable,
+                        excl
+                        ## "sum|post_scrn"
+                    )
+            ) %>%
+            ggplot2::ggplot(aes(x = variable, y = value)) + #
+            ggplot2::facet_wrap(~ variable, scales = "free") +
+            ggplot2::geom_boxplot() +
+            ggplot2::geom_text(
+                aes(label = outlier),
+                na.rm = TRUE,
+                hjust = -0.3,
+                size = 2,
+                position = position_jitter()
+            )
+        return(outlier_boxplots)
     }

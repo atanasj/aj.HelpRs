@@ -6,6 +6,14 @@
 \usage{
 qq_plots(df)
 }
+\arguments{
+\item{df}{your data}
+}
 \description{
 create numerous qq_plots of selected variables
+}
+\details{
+use with dplyr::select or purr::keep
+
+https://drsimonj.svbtle.com/quick-plot-of-all-variables
 }

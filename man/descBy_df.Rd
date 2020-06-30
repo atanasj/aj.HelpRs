@@ -6,6 +6,13 @@
 \usage{
 descBy_df(df, grp, ...)
 }
+\arguments{
+\item{df}{your data}
+
+\item{grp}{var to group by}
+
+\item{...}{accepts arguments used as per \code{pscyh::describeBy}}
+}
 \description{
 create df of descriptives by group
 }

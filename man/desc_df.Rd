@@ -6,6 +6,11 @@
 \usage{
 desc_df(df, ...)
 }
+\arguments{
+\item{df}{your data}
+
+\item{...}{accepts arguments as per \code{psych::describe}}
+}
 \description{
 create df of descriptives
 }

@@ -1,13 +1,13 @@
 Package: aj.HelpRs
-Title: What the Package Does (One Line, Title Case)
+Title: Some Functions that if find Helpful! 
 Version: 0.0.0.9000
 Authors@R:
     person(given = "Atanas Janackovski",
            family = "Last",
            role = c("aut", "cre"),
-           email = "atanas.janackovski@gmail.com",
+           email = "aj347@uowmail.edu.au",
            comment = c(ORCID = "https://orcid.org/0000-0002-3218-4700"))
-Description: This package is a collection of funcitons that I find useful whe working with R. It is intended as part training for me in writing functions and packages, as well as package development. YMMV regarding the utility of this package and functions to your workflow.
+Description: This package is a collection of functions that I find useful whe working with R. It is intended as part training for me in writing functions and packages, as well as package development. YMMV regarding the utility of this package and functions to your workflow.
 License: `use_mit_license()`
 Encoding: UTF-8
 LazyData: true
