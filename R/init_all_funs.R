@@ -1,3 +1,7 @@
+##' @title import some global variables
+##' @import utils
+utils::globalVariables(".")
+
 ##' @title html package help function
 ##' @param ... usually `library = "package-name"`
 ##' @export
@@ -109,13 +113,13 @@ pro_mean_miss <-
                ## mean of rows
                UQ(paste(rlang::syms(c(new_name)), "mean", sep = "_")) :=
                  round(
-                   base::rowMeans(select(.data, ...), na.rm = TRUE) *
+                   base::rowMeans(select(., ...), na.rm = TRUE) *
                    ## scaled up to base measures
-                   base::rowSums(!is.na(select(.data, ...))),
+                   base::rowSums(!is.na(select(., ...))),
                    digits = 2),
                ## percent missing of rows
                UQ(paste(rlang::syms(c(new_name)), "miss", sep = "_")) :=
-                 base::rowMeans(is.na(dplyr::select(.data, ...)))
+                 base::rowMeans(is.na(dplyr::select(., ...)))
              )
     return(data)
   }
