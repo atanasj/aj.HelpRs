@@ -259,7 +259,7 @@ corstars <-
     ## trunctuate the correlation matrix to two decimal and drop leading zero
     R <-
       sub(
-        "^(-?)0.", "\\1.",
+        "^(.?)0.", "\\1.",
         format(round(cbind(rep(-1.11, ncol(data)), R), 2))[, -1]
       )
     ## build a new matrix that includes the correlations with their apropriate
