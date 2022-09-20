@@ -22,5 +22,6 @@ corstars(
 }
 \description{
 This is a function to create correlation tables. The expecation
-is that this will be passed meting linke \code{kable}.
+is that this will be passed meting linke \code{kable}. Code adpated from
+\href{http://sthda.com/english/wiki/elegant-correlation-table-using-xtable-r-package}{here}. # nolint
 }

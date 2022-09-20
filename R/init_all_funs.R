@@ -232,7 +232,8 @@ workspace_size <-
 
 ##' @title Create correlation tables for printing
 ##' @description This is a function to create correlation tables. The expecation
-##'   is that this will be passed meting linke `kable`.
+##'   is that this will be passed meting linke `kable`. Code adpated from
+##'   [here](http://sthda.com/english/wiki/elegant-correlation-table-using-xtable-r-package). # nolint
 ##' @importFrom psych corr.test
 ##' @param data your data
 ##' @param method correlation methods taken from "psych::corr.test()", defaults to "pearson". # nolint
@@ -244,7 +245,6 @@ corstars <-
            method = c("pearson", "spearman", "kendall"),
            removeTriangle = c("upper", "lower"),
            result = c("none", "html")) {
-    ## require(psych)
     data <- as.matrix(data)
     correlation_matrix <- corr.test(data, method = method[1])
     R <- correlation_matrix$r # Matrix of correlation coeficients
@@ -256,8 +256,12 @@ corstars <-
       mystars <-
         ifelse(p < .001, "<sup>***</sup>", ifelse(p < .01, "<sup>** </sup>", ifelse(p < .05, "<sup>*  </sup>", "<sup>   </sup>"))) # nolint
     }
-    ## trunctuate the correlation matrix to two decimal
-    R <- format(round(cbind(rep(-1.11, ncol(data)), R), 2))[, -1]
+    ## trunctuate the correlation matrix to two decimal and drop leading zero
+    R <-
+      sub(
+        "^(-?)0.", "\\1.",
+        format(round(cbind(rep(-1.11, ncol(data)), R), 2))[, -1]
+      )
     ## build a new matrix that includes the correlations with their apropriate
     ## stars
     Rnew <- matrix(paste(R, mystars, sep = ""), ncol = ncol(data))
