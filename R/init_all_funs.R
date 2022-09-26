@@ -265,22 +265,22 @@ corstars <-
     ## build a new matrix that includes the correlations with their apropriate
     ## stars
     Rnew <- matrix(paste(R, mystars, sep = ""), ncol = ncol(data))
-    diag(Rnew) <- paste(diag(R), " ", sep = "")
+    diag(Rnew) <- "--"
     rownames(Rnew) <- colnames(data)
     colnames(Rnew) <- paste(colnames(data), "", sep = "")
     ## remove upper triangle of correlation matrix
     if (removeTriangle[1] == "upper") {
       Rnew <- as.matrix(Rnew)
-      Rnew[upper.tri(Rnew, diag = TRUE)] <- ""
+      Rnew[upper.tri(Rnew, diag = FALSE)] <- ""
       Rnew <- as.data.frame(Rnew)
     } else
     ## remove lower triangle of correlation matrix
     if (removeTriangle[1] == "lower") {
       Rnew <- as.matrix(Rnew)
-      Rnew[lower.tri(Rnew, diag = TRUE)] <- ""
+      Rnew[lower.tri(Rnew, diag = FALSE)] <- ""
       Rnew <- as.data.frame(Rnew)
     }
-    ## remove last column and return the correlation matrix
-    Rnew <- cbind(Rnew[1:length(Rnew) - 1])
+    ## return the correlation matrix
+    Rnew <- cbind(Rnew[1:length(Rnew)])
     return(Rnew)
   }
